@@ -15,5 +15,5 @@ const paymentData = {
   numeroSend: " 01010101 ",
   nomclient: " John Doe ",
   return_url: " https://your-domain.com/callback ",
-  webhook_url: "https://web-lnr7.onrender.com/webhook, // Le webhook doit accepter les requêtes POST pour recevoir les données.
+  webhook_url: "https://drx-5j0z.onrender.com/webhook", // Le webhook doit accepter les requêtes POST pour recevoir les données.
 };
