@@ -1,33 +1,28 @@
 const express = require("express");
-const cors = require("cors");
-const makePayment = require("./pay");
-const checkPaymentStatus = require("./checkPaymentStatus");
-
+const axios = require("axios");
 const app = express();
+
 app.use(express.json());
-app.use(cors());
 
-// Endpoint de paiement
+// Endpoint paiement
 app.post("/pay", async (req, res) => {
-  try {
-    const response = await makePayment(req.body);
-    res.json(response);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+    try {
+        const response = await axios.post(
+            "https://www.pay.moneyfusion.net/bk_market/300c1b571fa48efe/pay/",
+            req.body,
+            { headers: { "Content-Type": "application/json" } }
+        );
+        res.json(response.data);
+    } catch (err) {
+        res.json({ statut: false, message: err.message });
+    }
 });
 
-// Endpoint de vérification
-app.get("/status/:token", async (req, res) => {
-  try {
-    const result = await checkPaymentStatus(req.params.token);
-    res.json(result);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+// Webhook
+app.post("/webhook", (req, res) => {
+    console.log("📩 Webhook reçu :", req.body);
+    res.sendStatus(200);
 });
 
-// Port Render
-app.listen(process.env.PORT || 3000, () => {
-  console.log("API en ligne");
-});
+app.listen(3000, () => console.log("Serveur OK ✔"));
+
